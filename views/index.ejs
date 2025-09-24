@@ -1,0 +1,327 @@
+<!-- Hero Section -->
+<section class="hero-section text-white py-5">
+    <div class="container">
+        <div class="row align-items-center min-vh-60">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">
+                    Find Your Dream Job Today
+                </h1>
+                <p class="lead mb-4">
+                    Discover thousands of job opportunities and advance your career with InternSpot. 
+                    Connect with top employers and find the perfect role for you.
+                </p>
+                
+                <!-- Search Form -->
+                <div class="card border-0 shadow mb-4">
+                    <div class="card-body">
+                        <form action="/jobs/search" method="GET" class="row g-3">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text text-primary">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                    <input type="text" class="form-control" name="q" 
+                                           placeholder="Job title, company, or keywords">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <span class="input-group-text text-primary">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </span>
+                                    <input type="text" class="form-control" name="location" 
+                                           placeholder="City or remote">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-search me-1"></i>Search
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="mt-4">
+                    <% if (!locals.isAuthenticated) { %>
+                        <a href="/auth/register" class="btn btn-light btn-lg me-3">
+                            <i class="fas fa-user-plus me-2"></i>Get Started
+                        </a>
+                        <a href="/jobs" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-briefcase me-2"></i>Browse Jobs
+                        </a>
+                    <% } else { %>
+                        <a href="/dashboard" class="btn btn-light btn-lg me-3">
+                            <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                        </a>
+                        <a href="/jobs/recommended" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-star me-2"></i>Recommended Jobs
+                        </a>
+                    <% } %>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 text-center">
+                <div class="hero-image">
+                    <div class="feature-icon mx-auto mb-3" style="width: 120px; height: 120px;">
+                        <i class="fas fa-users display-3 text-white"></i>
+                    </div>
+                    <div class="mt-3">
+                        <small class="text-light opacity-75">Connecting Talent with Opportunity</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 mb-4">
+                <div class="stat-item">
+                    <i class="fas fa-briefcase fa-3x text-primary mb-3"></i>
+                    <h3 class="fw-bold">1,000+</h3>
+                    <p class="text-muted">Active Jobs</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-item">
+                    <i class="fas fa-building fa-3x text-primary mb-3"></i>
+                    <h3 class="fw-bold">500+</h3>
+                    <p class="text-muted">Companies</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-item">
+                    <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                    <h3 class="fw-bold">5,000+</h3>
+                    <p class="text-muted">Job Seekers</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-item">
+                    <i class="fas fa-handshake fa-3x text-primary mb-3"></i>
+                    <h3 class="fw-bold">2,500+</h3>
+                    <p class="text-muted">Successful Hires</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Jobs Section -->
+<% if (locals.featuredJobs && featuredJobs.length > 0) { %>
+<section class="py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="fw-bold mb-3">Featured Job Opportunities</h2>
+                <p class="text-muted">Discover exciting career opportunities from top companies</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <% featuredJobs.forEach(function(job) { %>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 job-card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h5 class="card-title mb-0">
+                                    <a href="/jobs/<%= job._id %>" class="text-decoration-none text-dark">
+                                        <%= job.title %>
+                                    </a>
+                                </h5>
+                                <% if (job.urgent) { %>
+                                <span class="badge bg-danger">Urgent</span>
+                                <% } else if (job.featured) { %>
+                                <span class="badge bg-warning">Featured</span>
+                                <% } %>
+                            </div>
+                            
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-building me-1"></i>
+                                <%= job.company %>
+                            </p>
+                            
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-map-marker-alt me-1"></i>
+                                <%= job.location %>
+                            </p>
+                            
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-briefcase me-1"></i>
+                                <%= job.jobType %> • <%= job.workMode %>
+                            </p>
+                            
+                            <% if (job.salary && (job.salary.min || job.salary.max)) { %>
+                            <p class="text-success mb-3">
+                                <i class="fas fa-dollar-sign me-1"></i>
+                                <%= job.formattedSalary %>
+                            </p>
+                            <% } %>
+                            
+                            <p class="card-text small text-muted">
+                                <%= job.description.substring(0, 120) %>...
+                            </p>
+                            
+                            <div class="mb-3">
+                                <% job.skills.slice(0, 3).forEach(function(skill) { %>
+                                <span class="badge bg-secondary me-1"><%= skill %></span>
+                                <% }); %>
+                                <% if (job.skills.length > 3) { %>
+                                <span class="badge bg-light text-dark">+<%= job.skills.length - 3 %> more</span>
+                                <% } %>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    Posted <%= job.timeAgo %>
+                                </small>
+                                <a href="/jobs/<%= job._id %>" class="btn btn-primary btn-sm">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="/jobs" class="btn btn-primary btn-lg">
+                <i class="fas fa-search me-2"></i>View All Jobs
+            </a>
+        </div>
+    </div>
+</section>
+<% } %>
+
+<!-- Latest Jobs Section -->
+<% if (locals.latestJobs && latestJobs.length > 0) { %>
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="fw-bold mb-3">Latest Job Postings</h2>
+                <p class="text-muted">Fresh opportunities added daily</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <% latestJobs.slice(0, 6).forEach(function(job) { %>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 job-card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="/jobs/<%= job._id %>" class="text-decoration-none text-dark">
+                                    <%= job.title %>
+                                </a>
+                            </h5>
+                            
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-building me-1"></i>
+                                <%= job.company %>
+                            </p>
+                            
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-map-marker-alt me-1"></i>
+                                <%= job.location %>
+                            </p>
+                            
+                            <span class="badge bg-primary mb-2"><%= job.category %></span>
+                            
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <small class="text-muted">
+                                    <%= job.timeAgo %>
+                                </small>
+                                <a href="/jobs/<%= job._id %>" class="btn btn-outline-primary btn-sm">
+                                    Learn More
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="/jobs" class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-arrow-right me-2"></i>Explore More Jobs
+            </a>
+        </div>
+    </div>
+</section>
+<% } %>
+
+<!-- How It Works Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="fw-bold mb-3">How InternSpot Works</h2>
+                <p class="text-muted">Simple steps to find your next opportunity</p>
+            </div>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="d-flex mb-4">
+                    <div class="flex-shrink-0">
+                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" 
+                             style="width: 60px; height: 60px;">
+                            <span class="fw-bold fs-4">1</span>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-4">
+                        <h5 class="fw-bold">Create Your Profile</h5>
+                        <p class="text-muted">Build a compelling profile showcasing your skills, experience, and career goals.</p>
+                    </div>
+                </div>
+                
+                <div class="d-flex mb-4">
+                    <div class="flex-shrink-0">
+                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" 
+                             style="width: 60px; height: 60px;">
+                            <span class="fw-bold fs-4">2</span>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-4">
+                        <h5 class="fw-bold">Search & Apply</h5>
+                        <p class="text-muted">Browse thousands of jobs, use advanced filters, and apply with personalized cover letters.</p>
+                    </div>
+                </div>
+                
+                <div class="d-flex mb-4">
+                    <div class="flex-shrink-0">
+                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" 
+                             style="width: 60px; height: 60px;">
+                            <span class="fw-bold fs-4">3</span>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-4">
+                        <h5 class="fw-bold">Track & Get Hired</h5>
+                        <p class="text-muted">Monitor your application status, follow up with employers, and land your dream job.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5">
+            <% if (!locals.isAuthenticated) { %>
+                <a href="/auth/register" class="btn btn-primary btn-lg me-3">
+                    <i class="fas fa-rocket me-2"></i>Start Your Journey
+                </a>
+                <a href="/about" class="btn btn-outline-primary btn-lg">
+                    Learn More
+                </a>
+            <% } else { %>
+                <a href="/dashboard" class="btn btn-primary btn-lg">
+                    <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                </a>
+            <% } %>
+        </div>
+    </div>
+</section>

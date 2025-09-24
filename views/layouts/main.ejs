@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%= title %> - InternSpot</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="InternSpot - Find your dream job. A comprehensive job portal for job seekers to discover opportunities and advance their careers.">
+    <meta name="keywords" content="jobs, internship, career, employment, job portal, job search">
+    <meta name="author" content="InternSpot">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 60vh;
+        }
+        .footer {
+            background-color: #212529;
+            color: white;
+            margin-top: auto;
+        }
+        .text-primary {
+            color: #0d6efd !important;
+        }
+        .bg-primary {
+            background-color: #0d6efd !important;
+        }
+        .main-content {
+            min-height: calc(100vh - 200px);
+        }
+        .job-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        .job-card:hover {
+            border-left-color: #0d6efd;
+            transform: translateX(4px);
+        }
+        .badge {
+            font-weight: 500;
+        }
+        .alert {
+            border: none;
+            border-radius: 0.5rem;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+    </style>
+    
+    <% if (locals.page && page === 'home') { %>
+    <!-- Additional home page styles -->
+    <style>
+        .stat-item {
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+        .stat-item i {
+            margin-bottom: 1rem;
+        }
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+    </style>
+    <% } %>
+</head>
+<body class="<%= locals.page ? 'page-' + page : '' %> d-flex flex-column min-vh-100">
+    
+    <!-- Navigation -->
+    <%- include('../partials/navbar') %>
+    
+    <!-- Flash Messages -->
+    <% if (locals.messages) { %>
+        <% Object.keys(messages).forEach(type => { %>
+            <% messages[type].forEach(message => { %>
+                <div class="alert alert-<%= type === 'error' ? 'danger' : type %> alert-dismissible fade show m-0" role="alert">
+                    <div class="container">
+                        <i class="fas fa-<%= type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle' %> me-2"></i>
+                        <%= message %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                </div>
+            <% }); %>
+        <% }); %>
+    <% } %>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <%- body %>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer py-4 mt-auto">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="mb-3">
+                        <i class="fas fa-briefcase me-2"></i>InternSpot
+                    </h5>
+                    <p class="text-light">Find your dream job and advance your career with InternSpot. Connect with top employers and discover exciting opportunities.</p>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="mb-3">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="/jobs" class="text-light text-decoration-none">Browse Jobs</a></li>
+                        <li><a href="/about" class="text-light text-decoration-none">About</a></li>
+                        <li><a href="/contact" class="text-light text-decoration-none">Contact</a></li>
+                        <li><a href="/privacy" class="text-light text-decoration-none">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="mb-3">Support</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="/terms" class="text-light text-decoration-none">Terms of Service</a></li>
+                        <li><a href="/contact" class="text-light text-decoration-none">Help Center</a></li>
+                        <% if (!locals.isAuthenticated) { %>
+                        <li><a href="/auth/register" class="text-light text-decoration-none">Join InternSpot</a></li>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4 text-light">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0 text-light">&copy; 2024 InternSpot. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small class="text-light">Built with ❤️ for Job Seekers</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Auto-dismiss alerts after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                var alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function(alert) {
+                    var bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                });
+            }, 5000);
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+    
+    <% if (locals.page && page === 'dashboard') { %>
+    <!-- Dashboard specific JavaScript -->
+    <script>
+        // Load profile suggestions
+        fetch('/api/profile-suggestions')
+            .then(response => response.json())
+            .then(data => {
+                // Handle profile suggestions
+                console.log('Profile suggestions:', data);
+            })
+            .catch(error => console.error('Error loading suggestions:', error));
+    </script>
+    <% } %>
+</body>
+</html>
